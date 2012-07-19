@@ -48,10 +48,9 @@ shortest way to confine an interactive shell and all its sub-programs
 is:</p><pre>proot -r /mnt/slackware-8.0/
 
 $ cat /etc/motd
-Welcome to Slackware Linux 8.0</pre></div><div class="section" id="mount\ --bind\ equivalent"><h3><tt>mount --bind</tt> equivalent</h3><p>The default rootfs is <tt>/</tt> when none is specified, this permits to
-use the bind mechanism to relocate host files and directories.  This
-is typically useful to cheat programs that perform access to
-hard-coded locations, like some installation scripts:</p><pre>proot -b /tmp/alternate_opt:/opt
+Welcome to Slackware Linux 8.0</pre></div><div class="section" id="mount\ --bind\ equivalent"><h3><tt>mount --bind</tt> equivalent</h3><p>The bind mechanism permits to relocate files and directories.  This is
+typically useful to cheat programs that perform access to hard-coded
+locations, like some installation scripts:</p><pre>proot -b /tmp/alternate_opt:/opt
 
 $ cd to/sources
 $ make install
@@ -67,7 +66,7 @@ $ resolveip google.com
 IP address of google.com is 1.2.3.4
 $ echo '5.6.7.8 google.com' &gt; /etc/hosts
 $ resolveip google.com
-IP address of google.com is 5.6.7.8</pre></div><div class="section" id="chroot\ +\ mount\ --bind\ equivalent"><h3><tt>chroot</tt> + <tt>mount --bind</tt> equivalent</h3><p>The option <tt>-b</tt>, short for <tt>--bind</tt>, makes any file from the host
+IP address of google.com is 5.6.7.8</pre></div><div class="section" id="chroot\ +\ mount\ --bind\ equivalent"><h3><tt>chroot</tt> + <tt>mount --bind</tt> equivalent</h3><p>The two features above can be combined to make any file from the host
 rootfs accessible in the confined environment just as if it were
 initially part of the guest rootfs.  It is sometimes required to run
 programs that rely on some specific files:</p><pre>proot -r /mnt/slackware-8.0/
