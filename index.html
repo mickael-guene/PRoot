@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<html xmlns="http://www.w3.org/1999/xhtml" itemscope="" itemtype="http://schema.org/Product" xml:lang="en" lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>PRoot — chroot, mount --bind, and binfmt_misc without privilege/setup</title><link rel="stylesheet" href="website.css" type="text/css"/><meta itemprop="name" content="PRoot"/><meta itemprop="description" content="PRoot is a user-space implementation of chroot, mount --bind,&#10;and binfmt_misc.  This means that users don't need any privilege&#10;or setup to do things like: using an arbitrary directory as the new&#10;root file-system or making files accessible somewhere else in the&#10;file-system hierarchy or executing programs built for another CPU&#10;architecture transparently through QEMU user-mode.  Technically PRoot&#10;relies on ptrace, an unprivileged system-call available in every&#10;Linux kernel."/><script type="text/javascript">
+<html xmlns="http://www.w3.org/1999/xhtml" itemscope="" itemtype="http://schema.org/Product" xml:lang="en" lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>PRoot — chroot, mount --bind, and binfmt_misc without privilege/setup</title><link rel="stylesheet" href="website.css" type="text/css"/><meta itemprop="name" content="PRoot"/><meta itemprop="description" content="PRoot is a user-space implementation of chroot, mount --bind,&#10;and binfmt_misc.  This means that users don't need any privilege&#10;or setup to do things like: using an arbitrary directory as the new&#10;root filesystem, making files accessible somewhere else in the&#10;filesystem hierarchy, or executing programs built for another CPU&#10;architecture transparently through QEMU user-mode.  Technically PRoot&#10;relies on ptrace, an unprivileged system-call available in every&#10;Linux kernel."/><script type="text/javascript">
 	  var _gaq = _gaq || [];
 	  _gaq.push(['_setAccount', 'UA-20176046-1']);
 	  _gaq.push(['_trackPageview']);
@@ -12,8 +12,8 @@
 	    content to self-closing tags--></div></div><div id="contents"><ul><li><a href="#description">Description</a></li><li><a href="#examples">Examples</a></li><li><a href="#downloads">Downloads</a></li><li><a href="#support">Support</a></li><li><a href="https://plus.google.com/107605112469213359575/posts">News+</a></li></ul></div><div xmlns="" class="section" id="description"><h2>Description</h2><p>PRoot is a user-space implementation of <tt>chroot</tt>, <tt>mount --bind</tt>,
 and <tt>binfmt_misc</tt>.  This means that users don't need any privilege
 or setup to do things like: using an arbitrary directory as the new
-root file-system or making files accessible somewhere else in the
-file-system hierarchy or executing programs built for another CPU
+root filesystem, making files accessible somewhere else in the
+filesystem hierarchy, or executing programs built for another CPU
 architecture transparently through QEMU user-mode.  Technically PRoot
 relies on <tt>ptrace</tt>, an unprivileged system-call available in every
 Linux kernel.</p><p>The new root file-system, a.k.a <em>guest rootfs</em>, typically contains a
