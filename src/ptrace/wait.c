@@ -253,6 +253,40 @@ bool handle_ptracee_event(Tracee *ptracee, int event)
 	if (WIFSTOPPED(event)) {
 		switch ((event & 0xfff00) >> 8) {
 		case SIGTRAP | 0x80:
+            /* umeq ptracer syscall filtering logic */
+            /* fetch register in cache earlier so correct current regs are ok in handle_ptracee_event */
+		    fetch_regs(ptracee);
+             /* we take note that we are execve */
+            if (ptracee->status == 0 && get_sysnum(ptracee, CURRENT) == PR_execve)
+                PTRACEE.is_exec_in_between = true;
+             /* filter all except some umeq syscall */
+            if (ptracee->status == 0 && get_sysnum(ptracee, CURRENT) == PR_umeq && peek_reg(ptracee, CURRENT, SYSARG_1) == 0) {
+                /* entry syscall sequence */
+                /* save tracing_started status so we avoid generate exit sequence without an entry */
+                PTRACEE.tracing_started_at_umeq_syscall_entry = PTRACEE.tracing_started;
+            } else if (ptracee->status != 0 && get_sysnum(ptracee, CURRENT) == PR_umeq && peek_reg(ptracee, CURRENT, SYSARG_1) == 2) {
+                /* generate execve sigtrap event if we detect an execve syscall */
+                if (PTRACEE.is_exec_in_between) {
+                    if (PTRACEE.options & PTRACE_O_TRACEEXEC) {
+                        event = __W_STOPCODE(SIGTRAP | PTRACE_EVENT_EXEC << 8);
+                    } else {
+                        event = __W_STOPCODE(SIGTRAP);
+                    }
+                    PTRACEE.is_exec_in_between = false;
+                    PTRACEE.tracing_started = true;
+                    break;
+                } else
+                     return false;
+            } else if (ptracee->status != 0 && get_sysnum(ptracee, CURRENT) == PR_umeq && peek_reg(ptracee, CURRENT, SYSARG_1) == 1) {
+                /* exit syscall sequence */
+                /* don't generate it if entry was not generated */
+                if (!PTRACEE.tracing_started_at_umeq_syscall_entry)
+                        return false;
+            } else {
+                /* dropping all others syscalls sequence */
+                return false;
+            }
+            /* continue into standard proot sequence */
 			if (PTRACEE.ignore_syscalls || PTRACEE.ignore_loader_syscalls)
 				return false;
 
@@ -271,12 +305,17 @@ bool handle_ptracee_event(Tracee *ptracee, int event)
 			handled_by_proot_first = true;				\
 			break;
 
+        case SIGTRAP | PTRACE_EVENT_EXEC << 8:
+            /* under umeq we never deliver this event here but later on */
+            return false;
+         break;
+
 		CASE_FILTER_EVENT(FORK);
 		CASE_FILTER_EVENT(VFORK);
 		CASE_FILTER_EVENT(VFORKDONE);
 		CASE_FILTER_EVENT(CLONE);
 		CASE_FILTER_EVENT(EXIT);
-		CASE_FILTER_EVENT(EXEC);
+		//CASE_FILTER_EVENT(EXEC);
 
 			/* Never reached.  */
 			assert(0);

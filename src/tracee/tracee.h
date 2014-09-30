@@ -126,6 +126,8 @@ typedef struct tracee {
 		bool ignore_syscalls;
 		word_t options;
 		bool is_zombie;
+		bool is_exec_in_between;
+		bool tracing_started_at_umeq_syscall_entry;
 	} as_ptracee;
 
 	/* Current status:
