@@ -43,6 +43,8 @@
 #include "cli/note.h"
 
 
+/* UMEQ : comment all the stuff for gdb since in umeq case this is done by umeq */
+#if 0
 /**
  * Fill @path with the content of @vectors, formatted according to
  * @ptracee's current ABI.
@@ -136,6 +138,7 @@ static int bind_proc_pid_auxv(const Tracee *ptracee)
 
 	return 0;
 }
+#endif
 
 /**
  * Convert @mappings into load @script statements at the given @cursor
@@ -423,6 +426,8 @@ void translate_execve_exit(Tracee *tracee)
 		save_current_regs(tracee, ORIGINAL);
 		tracee->_regs_were_changed = true;
 
+        /* UMEQ : comment all the stuff for gdb since in umeq case this is done by umeq */
+#if 0
 		/* This is is required to make GDB work correctly
 		 * under PRoot, however it deserves to be used
 		 * unconditionally.  */
@@ -444,6 +449,7 @@ void translate_execve_exit(Tracee *tracee)
 		 * adress" errors otherwise.  */
 		if ((tracee->as_ptracee.options & PTRACE_O_TRACEEXEC) == 0)
 			kill(tracee->pid, SIGTRAP);
+#endif
 
 		return;
 	}
