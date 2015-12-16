@@ -347,4 +347,5 @@ static const Sysnum sysnums_i386[] = {
 	[ 347 ] = PR_process_vm_readv,
 	[ 348 ] = PR_process_vm_writev,
 	[ 349 ] = PR_kcmp,
+	[ 350 ] = PR_umeq,
 };
